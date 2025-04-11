@@ -1,0 +1,43 @@
+/* Zera a pagina */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+}
+
+
+/* COMEÇO DO NAV --------------------------- */
+
+.navbar {
+    background: #333;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar .logo {
+    font-size: 20px;
+    font-weight: bold;
+}
+.navbar ul {
+    list-style: none;
+    display: flex;
+}
+.navbar ul li {
+    margin-left: 20px;
+}
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.navbar ul li a:hover {
+    color: #f0a500;
+}
+
+/* FIM DO NAV ------------------------------ */
