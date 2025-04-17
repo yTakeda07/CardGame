@@ -21,7 +21,7 @@ if ($stmt->rowCount() > 0) {
         $_SESSION['tipoCG'] = $row['TP_USUARIO'];
         $_SESSION['IsLogadoCG'] = true;
 
-        echo "<script>window.location.href = '../index.html';</script>";
+        echo "<script>window.location.href = 'index.html';</script>";
         exit();
     } else {
         echo "Senha incorreta.";

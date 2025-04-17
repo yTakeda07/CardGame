@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `TB_HABILIDADE_CARTA` (
   FOREIGN KEY (`CD_CARTA`) REFERENCES `TB_CARTA`(`CD_CARTA`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
--- ----------------------------------------------------------
+-- ---------------------------------------------------------
 
 -- Estrutura da tabela `TB_CARTAS_USUARIO`
 CREATE TABLE IF NOT EXISTS `TB_CARTAS_USUARIO` (
