@@ -69,7 +69,21 @@ if(paginaAtual === "admin.html"){
         }).always(function() {
         console.log("Requisição AJAX carregar universos concluída");
         });
-    }
+    }else if(paginaAtual === "habilidades.html"){
+        //se a pagina atual for habilidades.html, faça
+                $.ajax({
+                    url: "../PHP/exibirhabilidades.php",
+                    type: "POST",
+                    data: { acao: "verificar" },
+                dataType: "html"
+            }).done(function(resp) {
+            $("main").html(resp); 
+            }).fail(function(jqXHR, textStatus) {
+            alert("Falha na requisição AJAX: " + textStatus);
+            }).always(function() {
+            console.log("Requisição AJAX carregar habilidades concluída");
+            });
+        }
 };
 
 //  verificação islogado-----------------------------------------------------------------------------------------------
@@ -120,20 +134,21 @@ function botaoregistro(botao){
 
 // adicionar carta --------------------------------------------------------------
 
-function adicionarcarta(botao){
+function AbrirModalCriarCarta(botao){
 
         $.ajax({
-            url: "../PHP/registrousuario.php",
+            url: "../PHP/ExibirModalCriarCarta.php",
             type: "POST",
-            data: { nome: nome, senha: senha }, // Enviar os dados como objeto JSON
-            dataType: "html"
-        }).done(function(resp) {
-            $(".caixa").html(resp); // Forma mais simples de modificar o conteúdo da div
-        }).fail(function(jqXHR, textStatus) {
-            alert("Falha na requisição AJAX: " + textStatus);
-        }).always(function() {
-            console.log("Requisição AJAX adicionar carta concluída");
-        });
+            data: { acao: "verificar" },
+        dataType: "html"
+    }).done(function(resp) {
+    $("#conteudomodal").html(resp); 
+    openmodal();
+    }).fail(function(jqXHR, textStatus) {
+    alert("Falha na requisição AJAX: " + textStatus);
+    }).always(function() {
+    console.log("Requisição AJAX carregar cartas concluída");
+    });
 }
 
 // Fim ajaxa dicionar carta -----------------------------
@@ -168,8 +183,9 @@ function previewImagem(input) {
 
 function alterar(input) {
     let valor = input.value;
-
-    document.getElementById("previewtexto").innerText = "Nome: "+valor;
+const preview = document.getElementById("previewtexto");
+if (preview){
+    preview.innerText = "Nome: "+valor;}
 }
 
 // fim função para preview de imagem e texto -------------------------------------------------------------
@@ -263,7 +279,7 @@ openmodal();
 }).fail(function(jqXHR, textStatus) {
 alert("Falha na requisição AJAX: " + textStatus);
 }).always(function() {
-console.log("Requisição AJAX carregar cartas concluída");
+console.log("Requisição AJAX exibir modal editar universo concluída");
 });
 }
 
@@ -371,8 +387,164 @@ function CriarUniverso(botao){
         }).fail(function(jqXHR, textStatus) {
         alert("Falha na requisição AJAX: " + textStatus);
         }).always(function() {
-        console.log("Requisição AJAX carregar cartas concluída");
+        console.log("Requisição AJAX carregar modar criar universo concluída");
         });
 }
 
 // fim botao exiir criar universo ------------------------------------------------------------------------------------
+
+// botao exibir criar habilibade ------------------------------------------------------------------------------------------
+
+function CriarHabilidade(botao){
+    $.ajax({
+url: "../PHP/ExibirModalCriarHabilidade.php",
+type: "POST",
+data: { acao: "verificar" },
+dataType: "html"
+}).done(function(resp) {
+$("#conteudomodal").html(resp); 
+openmodal();
+}).fail(function(jqXHR, textStatus) {
+alert("Falha na requisição AJAX: " + textStatus);
+}).always(function() {
+console.log("Requisição AJAX carregar modal criar habilidade concluída");
+});
+}
+
+// fim botao exibir criar habilibade ------------------------------------------------------------------------------------------
+
+// função upar habilidade no banco --------------------------------------------------------------------------------------------------------------
+
+function uparhabilidade(botao){
+    let LV_HABILIDADE = document.getElementById("LV_HABILIDADE").value;
+    let NM_HABILIDADE = document.getElementById("NM_HABILIDADE").value;
+    let DS_HABILIDADE = document.getElementById("DS_HABILIDADE").value;
+
+        $.ajax({
+            url: "../PHP/uploadhabilidade.php",
+            type: "POST",
+            data: {LV_HABILIDADE: LV_HABILIDADE, NM_HABILIDADE: NM_HABILIDADE, DS_HABILIDADE: DS_HABILIDADE},
+            dataType: "html"
+        }).done(function(resposta) {
+           $(".respmodal").append(resposta);
+            
+            // carrega novamente os cards, já que foi adicionado um novo
+            $.ajax({
+                url: "../PHP/exibirhabilidades.php",
+                type: "POST",
+                data: { acao: "verificar" },
+            dataType: "html"
+        }).done(function(resp) {
+        $("main").html(resp); 
+        }).fail(function(jqXHR, textStatus) {
+        alert("Falha na requisição AJAX: " + textStatus);
+        }).always(function() {
+        console.log("Requisição AJAX carregar habilidades concluída");
+        });
+        
+
+
+        }).fail(function(jqXHR, textStatus ) {
+            console.log("Request failed: " + textStatus);
+        }).always(function() {
+            console.log("requisicão ajax upar habilidade concluida");            
+        });
+
+
+
+
+}
+
+
+// fim função upar habilidade no banco ------------------------------------------------------------------------------------------------------------
+
+
+// função apagar habilidade -------------------------------------------------------------------------------------------------------------------------------------
+
+function apagarHabilidade(botao){
+        
+    const confirmacao = window.confirm("Voce Tem certeza que deseja excluir esta habilidade?") //confim pra nao excluir uma materia sem querer kk
+    if(confirmacao == true){
+        //se o usuario colocar sim, faz
+        var id = botao.id; //pega o id do botao clicado
+        $.ajax({
+            url: "../PHP/apagarhabilidade.php",
+            type: "POST",
+            data: { id: id },
+         dataType: "html"
+    }).done(function(resp) {
+        
+    $("main").html(resp); 
+    }).fail(function(jqXHR, textStatus) {
+    alert("Falha na requisição AJAX: " + textStatus);
+    }).always(function() {
+    console.log("Requisição AJAX apagar habilidade concluída");
+    });
+ 
+    }
+}
+
+// fim função apagar habilidade -------------------------------------------------------------------------------------------------------------------------------------
+
+// função modal editar habilidade -----------------------------------------------------------------------------------------------------------------------------------------------
+
+function ModalEditarHabilidade(botao){
+    id=botao.id;
+    $.ajax({
+        url: "../PHP/ExibirModalEditarHabilidade.php",
+        type: "POST",
+        data: { id: id },
+    dataType: "html"
+}).done(function(resp) {
+$("#conteudomodal").html(resp); 
+openmodal();
+}).fail(function(jqXHR, textStatus) {
+alert("Falha na requisição AJAX: " + textStatus);
+}).always(function() {
+console.log("Requisição AJAX exibir modal editar habilidade concluída");
+});
+}
+
+// fim função modal editar habilidade -------------------------------------------------------------------------------------------------------------------------------------------
+
+// função editar habilidade ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function EditarHabilidade(botao){
+    let id = botao.id;
+    let LV_HABILIDADE = document.getElementById("LV_HABILIDADE").value;
+    let NM_HABILIDADE = document.getElementById("NM_HABILIDADE").value;
+    let DS_HABILIDADE = document.getElementById("DS_HABILIDADE").value;
+
+        $.ajax({
+            url: "../PHP/EditarHabilidade.php",
+            type: "POST",
+            data: {LV_HABILIDADE: LV_HABILIDADE, NM_HABILIDADE: NM_HABILIDADE, DS_HABILIDADE: DS_HABILIDADE, id: id},
+            dataType: "html"
+        }).done(function(resposta) {
+           $(".respmodal").append(resposta);
+            
+            // carrega novamente os cards, já que foi adicionado um novo
+            $.ajax({
+                url: "../PHP/exibirhabilidades.php",
+                type: "POST",
+                data: { acao: "verificar" },
+            dataType: "html"
+        }).done(function(resp) {
+        $("main").html(resp); 
+        }).fail(function(jqXHR, textStatus) {
+        alert("Falha na requisição AJAX: " + textStatus);
+        }).always(function() {
+        console.log("Requisição AJAX carregar habilidades concluída");
+        });
+        
+
+
+        }).fail(function(jqXHR, textStatus ) {
+            console.log("Request failed: " + textStatus);
+        }).always(function() {
+            console.log("requisicão ajax editar habilidade concluida");            
+        });
+
+}
+
+// fim função editar habilidade ------------------------------------------------------------------------------------------------------------------------------------------------------------
