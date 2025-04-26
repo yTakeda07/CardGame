@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `TB_CARTA` (
   `NM_CARTA` varchar(20) NOT NULL,
   `CAMINHO_IMG_CARTA` VARCHAR(255) NOT NULL,
   `DS_CARTA` VARCHAR(255) NOT NULL,
-  `TP_CARTA` ENUM('Comum','Uncomum','Rara','Épica','Lendária','Mítica') NOT NULL,
+  `TP_CARTA` ENUM('Comum','Incomum','Rara','Épica','Lendária','Mítica') NOT NULL,
   `ATB_FORCA` INT(8) NOT NULL,
   `ATB_VELOCIDADE` INT(8) NOT NULL,
   `ATB_INTELIGENCIA` INT(8) NOT NULL,

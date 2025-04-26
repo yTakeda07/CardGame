@@ -17,9 +17,9 @@ echo "
             <div class='card'>
             <div class='info'>
              <button class='close-button' onclick='apagarHabilidade(this)' id='".$row['CD_HABILIDADE']."'>✖</button>
-              <p>Nome: " . $row['NM_HABILIDADE'] . "</p>
-            <p>Nivel: ".$row["LV_HABILIDADE"]."</p>
-            <p class='descricao-habilidade'>".$row["DS_HABILIDADE"]."</p>
+              <p>Nome: " . $row['NM_HABILIDADE'] . "</p>";
+            echo "<p>Nível: " . str_repeat("☆", $row["LV_HABILIDADE"]) . "</p>";
+           echo"<p class='descricao-habilidade'>".$row["DS_HABILIDADE"]."</p>
 
 
             </div>

@@ -127,7 +127,7 @@ dialog::backdrop{
     justify-content: space-between;
     gap: 20px;
     padding: 20px;
-    width: 600px;
+    width: 100%;
 }
 
 .lado-esquerdo,
@@ -141,10 +141,16 @@ dialog::backdrop{
 .lado-esquerdo {
     border-right: 1px solid #ccc;
     padding-right: 10px;
+    
+    
 }
 
 .lado-direito {
     padding-left: 10px;
+
+    min-width: 65%;
+    
+    
 }
 
 /* cards universo ------------------------------- */
@@ -231,7 +237,7 @@ dialog::backdrop{
 /* fim img universo ------------------------------------------------------------------------------ */
 
 #DS_CARTA {
-  width: 120%;
+  width: 100%;
   height: 150px;
   padding: 10px;
   font-size: 16px;
@@ -250,8 +256,83 @@ dialog::backdrop{
 }
 
 .descricao-habilidade{
-  background:#ccc; 
+  background:#99f5d6; 
   border-radius:8px; 
   padding:5px;
   
+}
+
+/* range -------------------------------------------------------------------------------------------------------------------------- */
+
+.range-container {
+  width: 300px;
+  margin: auto;
+}
+
+.range-label {
+  margin-bottom: 10px;
+  display: block;
+  text-align: center;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.3s;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #5050d6;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+input[type=range]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: rgb(80, 80, 214);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  background: rgb(80, 80, 214);
+}
+
+input[type=range]:hover {
+  background: #ccc;
+}
+
+.range-value {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+/* fim range -------------------------------------------------------------------------------------------------------------------------- */
+
+.grafico{
+  width: 120%;
+}
+.fieldsetatributo, .fieldsetuniversos, .fieldsethabilidades{
+  padding: 10px 50px;
+  border-radius: 22px;
+  background-color: white;
+}
+.universos-container, .habilidades-container {
+  width: 300px; /* ou o tamanho que você quiser */
+  height: 200px; /* altura fixa */
+  overflow-y: auto; /* ativa o scroll vertical quando necessário */
+  overflow-x: hidden; /* esconde o scroll horizontal se não precisar */
 }

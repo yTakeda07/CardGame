@@ -144,6 +144,7 @@ function AbrirModalCriarCarta(botao){
     }).done(function(resp) {
     $("#conteudomodal").html(resp); 
     openmodal();
+    carregargrafico();
     }).fail(function(jqXHR, textStatus) {
     alert("Falha na requisição AJAX: " + textStatus);
     }).always(function() {
@@ -548,3 +549,205 @@ function EditarHabilidade(botao){
 }
 
 // fim função editar habilidade ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// função preview cor raridade carta ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function raridadecartapreview(botao){
+    valor = botao.value
+    
+    switch (valor) {
+        case "Comum":
+            corraridade = "gray"
+            break;
+        case "Incomum":
+            corraridade = "green"
+            break;
+        case "Raro":
+            corraridade = "blue"
+            break;
+        case "Épico":
+            corraridade = "purple"
+            break;
+        case "Lendário":
+            corraridade = "yellow"
+            break;
+        case "Mítico":
+            corraridade = "red"
+            break;
+        default:
+            
+            break;
+    }
+    
+    const preview = document.getElementById("previewtexto");
+    
+        preview.style.color = corraridade;
+ 
+
+}
+
+// fim função preview cor raridade carta ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// função carregar grafico ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+let graficoRadar = null; // variável global para controlar a instância do gráfico
+
+function carregargrafico() {
+    // Corrigir captura dos valores (pegando o primeiro elemento da classe)
+    let Forca = document.getElementsByClassName("rangeValueForca")[0].value;
+    let Velocidade = document.getElementsByClassName("rangeValueVelocidade")[0].value;
+    let Inteligencia = document.getElementsByClassName("rangeValueInteligencia")[0].value;
+    let Vitalidade = document.getElementsByClassName("rangeValueVitalidade")[0].value;
+    let Resistencia = document.getElementsByClassName("rangeValueResistencia")[0].value;
+
+    const ctx = document.getElementById('grafico').getContext('2d');
+
+    // Se já existe um gráfico, destrói antes de criar outro
+    if (graficoRadar) {
+        graficoRadar.destroy();
+    }
+
+    // Cria o gráfico e armazena na variável global
+    graficoRadar = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['Força', 'Velocidade', 'Inteligência', 'Vitalidade', 'Resistência'],
+            datasets: [{
+                data: [Forca, Velocidade, Inteligencia, Vitalidade, Resistencia],
+                backgroundColor: '#5050d657',
+                borderColor: '#121005',
+                borderWidth: 2,
+                pointBackgroundColor: '#121005',
+                pointRadius: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                r: {
+                  min: 1,
+                  max: 100,
+                  ticks: {
+                    stepSize: 10,
+                    color:"black",
+                  },
+                  grid: {
+                    color: "#aaa" // cor das linhas do grafico
+                  },
+                  pointLabels: {
+                    color: "#000" // muda a cor dos nomes das habilidades
+                  },
+                  angleLines: {
+                    color: "#ccc" // muda as linhas que vão do centro até fora
+                  }
+                }
+              },
+              plugins: {
+                legend: {
+                  display: false
+                }
+              }
+        }
+    });
+}
+
+function mudargrafico() {
+    carregargrafico();
+}
+
+// fim função carregar grafico ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// FUNÇÃO IMPORTANTE!!!! 
+// PERGAR AS INFORMAÇÕES DO MODAL CRIAR CARTA E MANDAR PRO PHP MANDAR PRO BANCO -----------------------------------------------------------------------------------------------------------------------
+
+function uploadcarta(botao){
+
+    
+var fileInput = $("#arquivo")[0].files[0];
+    var NM_CARTA = document.getElementById("NM_CARTA").value;
+    let DS_CARTA = document.getElementById("DS_CARTA").value;
+    let TP_CARTA = document.getElementById("TP_CARTA").value;
+    let ATB_FORCA = document.getElementsByClassName("rangeValueForca")[0].value;
+    let ATB_VELOCIDADE = document.getElementsByClassName("rangeValueVelocidade")[0].value;
+    let ATB_INTELIGENCIA = document.getElementsByClassName("rangeValueInteligencia")[0].value;
+    let ATB_VITALIDADE = document.getElementsByClassName("rangeValueVitalidade")[0].value;
+    let ATB_RESISTENCIA = document.getElementsByClassName("rangeValueResistencia")[0].value;
+    let CD_UNIVERSO = pegarUniversoSelecionado();
+    let CD_HABILIDADE = getHabilidadesSelecionadas();
+
+    if(NM_CARTA != ""){
+        if(DS_CARTA != ""){
+            if(CD_UNIVERSO!=null){
+                alert("ok")
+            }else{
+                alert("selecione um universo para o personagem!")
+            }
+
+        }else{
+        alert("insira uma descrição para o personagem!")
+        }
+    }else{
+        alert("insira um nome para o personagem!")
+    }
+
+    var formData = new FormData();
+    if (fileInput) {
+        formData.append("temimg?", true);
+    } else {
+        formData.append("temimg?", false);
+    }
+
+    formData.append("arquivo", fileInput);
+    formData.append("NM", NM_CARTA);
+    formData.append("DS", DS_CARTA);
+    formData.append("TP", TP_CARTA);
+    formData.append("ATB_FORCA", ATB_FORCA);
+    formData.append("ATB_VELOCIDADE", ATB_VELOCIDADE);
+    formData.append("ATB_INTELIGENCIA", ATB_INTELIGENCIA);
+    formData.append("ATB_VITALIDADE", ATB_VITALIDADE);
+    formData.append("ATB_RESISTENCIA", ATB_RESISTENCIA);
+    formData.append("CD_UNIVERSO", CD_UNIVERSO);
+    formData.append("CD_HABILIDADE", JSON.stringify(CD_HABILIDADE));
+
+        $.ajax({
+            url: "../PHP/uploadcarta.php",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "html"
+        }).done(function(resposta) {
+           $(".lado-direito").append(resposta);
+            
+            // carrega novamente as cartas, já que foi adicionado uma nova
+        
+        }).fail(function(jqXHR, textStatus ) {
+            console.log("Request failed: " + textStatus);
+        }).always(function() {
+            console.log("requisicão ajax upload carta concluida");            
+        });
+
+
+}
+
+
+function pegarUniversoSelecionado() {
+    const selecionado = document.querySelector('input[name="universo"]:checked');
+    if (selecionado) {
+        return selecionado.id;
+    } else {
+        return null; 
+    }
+}
+
+function getHabilidadesSelecionadas() {
+    const selecionadas = [];
+    const checkboxes = document.querySelectorAll('input[name="habilidade"]:checked');
+
+    checkboxes.forEach(function(checkbox) {
+        selecionadas.push(checkbox.id);
+    });
+
+    console.log(selecionadas); // Aqui você vê no console
+    return selecionadas;       // Ou usa em outra parte do seu código
+}
