@@ -1,4 +1,4 @@
-<?php 
+<!-- <?php 
 
 include "conecta.php";
 // Arquivo base de exibição na tela (ser usado no include)
@@ -47,4 +47,4 @@ echo "
 }
 
 
-?>
+?> -->

@@ -34,10 +34,10 @@ echo "
                                <label>Raridade: </label> <select name='' id='TP_CARTA' onchange='raridadecartapreview(this)'>
                                     <option style='color:gray;' value='Comum'>Comum</option>
                                     <option style='color:green;' value='Incomum'>Incomum</option>
-                                    <option style='color:blue;' value='Raro'>Raro</option>
-                                    <option style='color:purple;' value='Épico'>Épico</option>
-                                    <option style='color:yellow;' value='Lendário'>Lendário</option>
-                                    <option style='color:red;' value='Mítico'>Mítico</option>
+                                    <option style='color:blue;' value='Raro'>Rara</option>
+                                    <option style='color:purple;' value='Épica'>Épico</option>
+                                    <option style='color:yellow;' value='Lendária'>Lendária</option>
+                                    <option style='color:red;' value='Mítica'>Mítico</option>
                                 </select>
                                 <br><br>
 
@@ -87,9 +87,10 @@ echo "
                                       </label>";
                                     }
                                 }     else{
-                                    echo "nenhum universo tem viu";}                           
+                                    echo "nenhum universo encontrado, <a href='universo.html'>Crie um</a>";}                           
 
                                    echo " 
+                                   <a href='universo.html'>Crie um</a>
                                 </div>
                                 </fieldset>
                                 <br><br>
@@ -106,9 +107,10 @@ echo "
                                       </label>";
                                     }
                                 }     else{
-                                    echo "nenhum habilidade tem viu";}                           
+                                    echo "nenhuma habilidade encontrada, <a href='habilidades.html'>Crie uma</a>";}                           
 
                                    echo " 
+                                   <a href='habilidades.html'>Crie uma</a>
                                 </div>
                                 </fieldset>
                                 <br><br>

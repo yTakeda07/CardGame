@@ -677,57 +677,57 @@ var fileInput = $("#arquivo")[0].files[0];
 
     if(NM_CARTA != ""){
         if(DS_CARTA != ""){
-            if(CD_UNIVERSO!=null){
-                alert("ok")
+            if(CD_UNIVERSO!=null){ 
+                if(FoiSelecionadaHabilidade()!=false){
+                    if(fileInput){
+                        
+                        var formData = new FormData();
+                        formData.append("arquivo", fileInput);
+                        formData.append("NM_CARTA", NM_CARTA);
+                        formData.append("DS_CARTA", DS_CARTA);
+                        formData.append("TP_CARTA", TP_CARTA);
+                        formData.append("ATB_FORCA", ATB_FORCA);
+                        formData.append("ATB_VELOCIDADE", ATB_VELOCIDADE);
+                        formData.append("ATB_INTELIGENCIA", ATB_INTELIGENCIA);
+                        formData.append("ATB_VITALIDADE", ATB_VITALIDADE);
+                        formData.append("ATB_RESISTENCIA", ATB_RESISTENCIA);
+                        formData.append("CD_UNIVERSO", CD_UNIVERSO);
+                        formData.append("CD_HABILIDADE", JSON.stringify(CD_HABILIDADE));
+                    
+                            $.ajax({
+                                url: "../PHP/uploadcarta.php",
+                                type: "POST",
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                dataType: "html"
+                            }).done(function(resposta) {
+                               $(".lado-direito").append(resposta);
+                                
+                                // carrega novamente as cartas, já que foi adicionado uma nova
+                            
+                            }).fail(function(jqXHR, textStatus ) {
+                                console.log("Request failed: " + textStatus);
+                            }).always(function() {
+                                console.log("requisicão ajax upload carta concluida");            
+                            });
+                    
+
+                    }else{
+                        alert("Insira uma imagem para o personagem")
+                    }
+                }else{
+                    alert("selecione um universo para o personagem!")
+                }
             }else{
                 alert("selecione um universo para o personagem!")
             }
-
         }else{
         alert("insira uma descrição para o personagem!")
         }
     }else{
         alert("insira um nome para o personagem!")
     }
-
-    var formData = new FormData();
-    if (fileInput) {
-        formData.append("temimg?", true);
-    } else {
-        formData.append("temimg?", false);
-    }
-
-    formData.append("arquivo", fileInput);
-    formData.append("NM", NM_CARTA);
-    formData.append("DS", DS_CARTA);
-    formData.append("TP", TP_CARTA);
-    formData.append("ATB_FORCA", ATB_FORCA);
-    formData.append("ATB_VELOCIDADE", ATB_VELOCIDADE);
-    formData.append("ATB_INTELIGENCIA", ATB_INTELIGENCIA);
-    formData.append("ATB_VITALIDADE", ATB_VITALIDADE);
-    formData.append("ATB_RESISTENCIA", ATB_RESISTENCIA);
-    formData.append("CD_UNIVERSO", CD_UNIVERSO);
-    formData.append("CD_HABILIDADE", JSON.stringify(CD_HABILIDADE));
-
-        $.ajax({
-            url: "../PHP/uploadcarta.php",
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            dataType: "html"
-        }).done(function(resposta) {
-           $(".lado-direito").append(resposta);
-            
-            // carrega novamente as cartas, já que foi adicionado uma nova
-        
-        }).fail(function(jqXHR, textStatus ) {
-            console.log("Request failed: " + textStatus);
-        }).always(function() {
-            console.log("requisicão ajax upload carta concluida");            
-        });
-
-
 }
 
 
@@ -751,3 +751,20 @@ function getHabilidadesSelecionadas() {
     console.log(selecionadas); // Aqui você vê no console
     return selecionadas;       // Ou usa em outra parte do seu código
 }
+
+function FoiSelecionadaHabilidade() {
+    const habilidades = getHabilidadesSelecionadas();
+    
+    if (habilidades.length === 0) {
+        alert('Selecione pelo menos uma habilidade!');
+        return false; 
+    }else{
+        return true;
+    }
+    
+
+}
+
+
+// FIM FUNÇÃO IMPORTANTE!!!! 
+// FIM PERGAR AS INFORMAÇÕES DO MODAL CRIAR CARTA E MANDAR PRO PHP MANDAR PRO BANCO -----------------------------------------------------------------------------------------------------------------------
