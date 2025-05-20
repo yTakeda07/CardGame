@@ -1,4 +1,4 @@
-<!-- <?php 
+<?php 
 
 include "conecta.php";
 // Arquivo base de exibição na tela (ser usado no include)
@@ -12,19 +12,17 @@ $stmt = $conn->query($exibir);
 if ($stmt->rowCount() > 0) {
     //se existir mais de 0 linhas na coluna, vai executar
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $TP_CARTA = $row["TP_CARTA"];
         
 echo "
             <div class='card'>
             <div class='info'>
-             <button class='close-button' onclick='apagarMateria(this)' id='".$row['CD_DISCIPLINA']."'>✖</button>
-              <p>Nome: " . $row['NM_DISCIPLINA'] . "</p>
-              <p>Carga Anual: " . $row['QT_CARGA_ANUAL'] . "</p>
-              <p>Carga Semanal: " . $row['QT_CARGA_SEMANAL'] . "</p>
-              <p>Avaliações por Bimestre: " . $row['NR_AVALIACAO'] . "</p>
-              <p>Periodo: " . $row['TP_DISCIPLINA'] . "</p>
+             <button class='close-button' onclick='apagarCarta(this)' id='".$row['CD_CARTA']."'>✖</button>
+              <p>Nome: " . $row['NM_CARTA'] . "</p>
+            <img id='img-carta' src='../PHP/".$row["CAMINHO_IMG_CARTA"]."'>
             </div>
             <br>
-            <button class='details-button' onclick='detalhesCliques(this)' id='".$row['CD_DISCIPLINA']."'>Ver Detalhes</button>
+            <button class='details-button' onclick='ModalEditarCarta(this)' id='".$row['CD_CARTA']."'>Editar carta</button>
         
 
 
@@ -47,4 +45,4 @@ echo "
 }
 
 
-?> -->
+?>

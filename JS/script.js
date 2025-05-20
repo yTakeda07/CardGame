@@ -41,6 +41,7 @@ if (paginaAtual === "registro.html"|| paginaAtual==="login.html"){
 
 if(paginaAtual === "admin.html"){
     //se a pagina atual for admin.html, faça
+    
             $.ajax({
                 url: "../PHP/exibircarta.php",
                 type: "POST",
@@ -53,7 +54,7 @@ if(paginaAtual === "admin.html"){
         }).always(function() {
         console.log("Requisição AJAX carregar cartas concluída");
         });
-
+    
 
 }else if(paginaAtual === "universo.html"){
     //se a pagina atual for universo.html, faça
@@ -562,20 +563,19 @@ function raridadecartapreview(botao){
         case "Incomum":
             corraridade = "green"
             break;
-        case "Raro":
+        case "Rara":
             corraridade = "blue"
             break;
-        case "Épico":
+        case "Épica":
             corraridade = "purple"
             break;
-        case "Lendário":
+        case "Lendária":
             corraridade = "yellow"
             break;
-        case "Mítico":
+        case "Mítica":
             corraridade = "red"
             break;
         default:
-            
             break;
     }
     
@@ -706,6 +706,20 @@ var fileInput = $("#arquivo")[0].files[0];
                                 
                                 // carrega novamente as cartas, já que foi adicionado uma nova
                             
+            $.ajax({
+                url: "../PHP/exibircarta.php",
+                type: "POST",
+                data: { acao: "verificar" },
+            dataType: "html"
+        }).done(function(resp) {
+        $("main").html(resp); 
+        }).fail(function(jqXHR, textStatus) {
+        alert("Falha na requisição AJAX: " + textStatus);
+        }).always(function() {
+        console.log("Requisição AJAX carregar cartas concluída");
+        });
+
+
                             }).fail(function(jqXHR, textStatus ) {
                                 console.log("Request failed: " + textStatus);
                             }).always(function() {
@@ -768,3 +782,58 @@ function FoiSelecionadaHabilidade() {
 
 // FIM FUNÇÃO IMPORTANTE!!!! 
 // FIM PERGAR AS INFORMAÇÕES DO MODAL CRIAR CARTA E MANDAR PRO PHP MANDAR PRO BANCO -----------------------------------------------------------------------------------------------------------------------
+
+
+
+// Função apagar carta -----------------------------------------------------------------------------------------------------------------------
+
+
+function apagarCarta(botao){
+    const confirmacao = window.confirm("Voce Tem certeza que deseja excluir esta carta?") //confim pra nao excluir uma materia sem querer kk
+    if(confirmacao == true){
+        //se o usuario colocar sim, faz
+        var id = botao.id; //pega o id do botao clicado
+        $.ajax({
+            url: "../PHP/apagarcarta.php",
+            type: "POST",
+            data: { id: id },
+         dataType: "html"
+    }).done(function(resp) {
+        
+    $("main").html(resp); 
+    }).fail(function(jqXHR, textStatus) {
+    alert("Falha na requisição AJAX: " + textStatus);
+    }).always(function() {
+    console.log("Requisição AJAX apagar carta concluída");
+    });
+ 
+    }
+
+}
+
+// fim função apagar carta -----------------------------------------------------------------------------------------
+
+
+
+// função modal editar carta -----------------------------------------------------------------------------------------------------------------------------------------------
+
+function ModalEditarCarta(botao){
+    id=botao.id;
+    $.ajax({
+        url: "../PHP/ExibirModalEditarCarta.php",
+        type: "POST",
+        data: { id: id },
+    dataType: "html"
+}).done(function(resp) {
+$("#conteudomodal").html(resp); 
+
+openmodal();
+mudargrafico()
+}).fail(function(jqXHR, textStatus) {
+alert("Falha na requisição AJAX: " + textStatus);
+}).always(function() {
+console.log("Requisição AJAX exibir modal editar carta concluída");
+});
+}
+
+// fim função modal editar carta -------------------------------------------------------------------------------------------------------------------------------------------

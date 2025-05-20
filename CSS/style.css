@@ -229,7 +229,7 @@ dialog::backdrop{
 
 /* img universo -------------------------------------------------------------------------------- */
 
-#img-universo{
+#img-universo, #img-carta{
   max-width: 100%;
   min-width: 100%;
 }
