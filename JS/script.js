@@ -15,7 +15,7 @@ if (paginaAtual === "registro.html"|| paginaAtual==="login.html"){
         if(resp.islogado!= true){ //se o usuario não estiver logado
             window.location.href = 'login.html'; //retorna pra pagina de login
         }else{ // se ele estiver jogado
-            $("footer").html(resp.nome+" - "+resp.senha+" - "+resp.tipo+" <a href='' onclick='deslogarsession(this)'>Deslogar</a>"); //escreve no canto inferior as informações
+            $("footer").html("<div >"+resp.nome+" - "+resp.senha+" - "+resp.tipo+" <a href='' onclick='deslogarsession(this)'>Deslogar</a></div>"); //escreve no canto inferior as informações
             if(resp.tipo=="ADMIN"){ // se ele for adm
                 document.querySelector('ul').insertAdjacentHTML('beforeend', '<li><a href=admin.html>ADMIN</a></li>');
             }else{// se não for adm
@@ -731,7 +731,7 @@ var fileInput = $("#arquivo")[0].files[0];
                         alert("Insira uma imagem para o personagem")
                     }
                 }else{
-                    alert("selecione um universo para o personagem!")
+                    
                 }
             }else{
                 alert("selecione um universo para o personagem!")
@@ -837,3 +837,104 @@ console.log("Requisição AJAX exibir modal editar carta concluída");
 }
 
 // fim função modal editar carta -------------------------------------------------------------------------------------------------------------------------------------------
+
+
+// FUNÇÃO IMPORTANTE!!!! 
+// PERGAR AS INFORMAÇÕES DO MODAL editar CARTA E MANDAR PRO PHP MANDAR PRO BANCO o update -----------------------------------------------------------------------------------------------------------------------
+
+function editarcarta(botao){
+
+    
+    var fileInput = $("#arquivo")[0].files[0];
+    let CD_CARTA = botao.id;
+    let imgatual=document.getElementById("arquivo").className;
+    let NM_CARTA = document.getElementById("NM_CARTA").value;
+    let DS_CARTA = document.getElementById("DS_CARTA").value;
+    let TP_CARTA = document.getElementById("TP_CARTA").value;
+    let ATB_FORCA = document.getElementsByClassName("rangeValueForca")[0].value;
+    let ATB_VELOCIDADE = document.getElementsByClassName("rangeValueVelocidade")[0].value;
+    let ATB_INTELIGENCIA = document.getElementsByClassName("rangeValueInteligencia")[0].value;
+    let ATB_VITALIDADE = document.getElementsByClassName("rangeValueVitalidade")[0].value;
+    let ATB_RESISTENCIA = document.getElementsByClassName("rangeValueResistencia")[0].value;
+    let CD_UNIVERSO = pegarUniversoSelecionado();
+    let CD_HABILIDADE = getHabilidadesSelecionadas();
+
+    if(NM_CARTA != ""){
+        if(DS_CARTA != ""){
+            if(CD_UNIVERSO!=null){ 
+                if(FoiSelecionadaHabilidade()!=false){
+                    
+                        
+                        var formData = new FormData();
+                        if(fileInput){ 
+                            formData.append("temimg?", true);
+                        }else{
+                            formData.append("temimg?", false);
+                        }
+                        formData.append("imgatual", imgatual);
+                        formData.append("fileInput", fileInput);
+                        formData.append("CD_CARTA", CD_CARTA);
+                        formData.append("NM_CARTA", NM_CARTA);
+                        formData.append("DS_CARTA", DS_CARTA);
+                        formData.append("TP_CARTA", TP_CARTA);
+                        formData.append("ATB_FORCA", ATB_FORCA);
+                        formData.append("ATB_VELOCIDADE", ATB_VELOCIDADE);
+                        formData.append("ATB_INTELIGENCIA", ATB_INTELIGENCIA);
+                        formData.append("ATB_VITALIDADE", ATB_VITALIDADE);
+                        formData.append("ATB_RESISTENCIA", ATB_RESISTENCIA);
+                        formData.append("CD_UNIVERSO", CD_UNIVERSO);
+                        formData.append("CD_HABILIDADE", JSON.stringify(CD_HABILIDADE));
+                    
+                            $.ajax({
+                                url: "../PHP/EditarCarta.php",
+                                type: "POST",
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                dataType: "html"
+                            }).done(function(resposta) {
+                               $(".lado-direito").append(resposta);
+                                
+                                // carrega novamente as cartas, já que foi adicionado uma nova
+                            
+            $.ajax({
+                url: "../PHP/exibircarta.php",
+                type: "POST",
+                data: { acao: "verificar" },
+            dataType: "html"
+        }).done(function(resp) {
+        $("main").html(resp); 
+        }).fail(function(jqXHR, textStatus) {
+        alert("Falha na requisição AJAX: " + textStatus);
+        }).always(function() {
+        console.log("Requisição AJAX carregar cartas concluída");
+        });
+
+
+                            }).fail(function(jqXHR, textStatus ) {
+                                console.log("Request failed: " + textStatus);
+                            }).always(function() {
+                                console.log("requisicão ajax editar carta concluida");            
+                            });
+                    
+
+
+                }else{
+                    
+                }
+            }else{
+                alert("selecione um universo para o personagem!")
+            }
+        }else{
+        alert("insira uma descrição para o personagem!")
+        }
+    }else{
+        alert("insira um nome para o personagem!")
+    }
+}
+
+
+
+
+// FIM FUNÇÃO IMPORTANTE!!!! 
+// FIM PERGAR AS INFORMAÇÕES DO MODAL CRIAR CARTA E MANDAR PRO PHP MANDAR PRO BANCO -----------------------------------------------------------------------------------------------------------------------

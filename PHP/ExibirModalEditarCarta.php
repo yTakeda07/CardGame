@@ -39,7 +39,7 @@ if ($row) {
         
                     <div class='lado-direito'>
                
-                            <input type='file' name='imagem' id='arquivo' required onchange='previewImagem(this)'>
+                            <input type='file' class='".$row["CAMINHO_IMG_CARTA"]."' name='imagem' id='arquivo' required onchange='previewImagem(this)'>
                             <br><br>
                             <input type='text' value='".$row["NM_CARTA"]."' name='nome' id='NM_CARTA' oninput='alterar(this)' required placeholder='Nome do personagem'>
                             <br><br>
@@ -118,7 +118,7 @@ if ($row) {
                                     $checked = in_array($row2["CD_HABILIDADE"], $CD_HABILIDADES) ? 'checked' : '';
                     echo "
                         <label style='display: flex; align-items: center; margin-bottom: 10px; cursor: pointer;'>
-                        <input type='checkbox' id='".$row2["CD_HABILIDADE"]."' name='habilidade[]' value='".$row2["CD_HABILIDADE"]."' $checked style='margin-right: 10px;'> ".$row2["NM_HABILIDADE"]."
+                        <input type='checkbox' id='".$row2["CD_HABILIDADE"]."' name='habilidade' value='".$row2["CD_HABILIDADE"]."' $checked style='margin-right: 10px;'> ".$row2["NM_HABILIDADE"]."
                             </label>";
 }
                                 }     else{
@@ -129,7 +129,7 @@ if ($row) {
                                 </div>
                                 </fieldset>
                                 <br><br>
-                            <button id='uploadcarta' onclick='uploadcarta(this)'>Enviar</button>
+                            <button id='".$row["CD_CARTA"]."' onclick='editarcarta(this)'>editar</button>
 
                     </div>
                 </div>
